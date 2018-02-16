@@ -1,0 +1,19 @@
+{
+  "name": "pantera-digital/yii2-sberbank-pay",
+  "type": "yii2-extension",
+  "authors": [
+    {
+      "name": "webmayak",
+      "email": "web-mayak@mail.ru"
+    },
+    {
+      "name": "singletonn",
+      "email": "sopranowest@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "pantera\\yii2\\pay\\sberbank\\": ""
+    }
+  }
+}
