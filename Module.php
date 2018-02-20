@@ -3,6 +3,7 @@
 namespace pantera\yii2\pay\sberbank;
 
 use Closure;
+use yii\base\InvalidConfigException;
 
 class Module extends \yii\base\Module
 {
@@ -46,4 +47,27 @@ class Module extends \yii\base\Module
      * @var string Ашион сбербанка для получения статуса оплаты
      */
     public $actionStatus = 'getOrderStatus.do';
+    /**
+     * @var string Url адрес страницы для возврата с платежного шлюза
+     * необходимо указывать без host
+     */
+    public $returnUrl = '/sberbank/default/complete';
+
+    public function init()
+    {
+        parent::init();
+        if (empty($this->login)
+            || empty($this->password)
+            || empty($this->successUrl)
+            || empty($this->failUrl)
+            || empty($this->url)
+            || empty($this->actionRegister)
+            || empty($this->actionStatus)
+            || empty($this->returnUrl)) {
+            throw new InvalidConfigException('Модуль настроен не правильно пожалуйсто прочтите документацию');
+        }
+        if ($this->testServer && empty($this->urlTest)) {
+            throw new InvalidConfigException('Включен тестовый режим но тестовый адрес сбербанка пустой');
+        }
+    }
 }

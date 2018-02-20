@@ -1,6 +1,7 @@
 <?php
 
 namespace pantera\yii2\pay\sberbank\models;
+use Yii;
 
 /**
  * This is the model class for table "invoice".
@@ -17,6 +18,24 @@ namespace pantera\yii2\pay\sberbank\models;
  */
 class Invoice extends \yii\db\ActiveRecord
 {
+    /**
+     * Добавление оплаты через сбербанк
+     * @param integer $orderId Идентификатор заказа
+     * @param float $price Цена заказа
+     * @return self
+     */
+    public static function addSberbank($orderId, $price)
+    {
+        $model = new self();
+        $model->order_id = $orderId;
+        $model->user_id = Yii::$app->user->id;
+        $model->method = 'SB';
+        $model->sum = $price;
+        $model->status = 'I';
+        $model->save();
+        return $model;
+    }
+
     /**
      * @inheritdoc
      */
