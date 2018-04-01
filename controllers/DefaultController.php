@@ -3,19 +3,15 @@
 namespace pantera\yii2\pay\sberbank\controllers;
 
 use pantera\yii2\pay\sberbank\models\Invoice;
-use pantera\yii2\pay\sberbank\Module;
 use Yii;
 use yii\base\ErrorException;
 use yii\db\Expression;
-use yii\helpers\Json;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
-    /* @var Module */
-    public $module;
+    use OrderTrait;
 
     /**
      * Сюда будет перенаправлен результат оплаты
@@ -27,7 +23,7 @@ class DefaultController extends Controller
     public function actionComplete()
     {
         /* @var $model Invoice */
-        if(is_null(Yii::$app->request->get('orderId'))){
+        if (is_null(Yii::$app->request->get('orderId'))) {
             throw new NotFoundHttpException();
         }
         $model = Invoice::find()
@@ -65,8 +61,8 @@ class DefaultController extends Controller
      * @return \yii\web\Response
      * @throws ErrorException
      * @throws \Exception
-     * @throws \Throwable
      * @throws \yii\db\StaleObjectException
+     * @throws \Throwable
      */
     public function actionCreate($id)
     {
@@ -80,40 +76,5 @@ class DefaultController extends Controller
         $model->orderId = $orderId;
         $model->update();
         return $this->redirect($formUrl);
-    }
-
-    /**
-     * Создание массива с данными для создания оплаты
-     * @param $model
-     * @return mixed
-     */
-    private function createOrder($model)
-    {
-        $post = [];
-        $post['orderNumber'] = $model->order_id;
-        $post['amount'] = $model->sum * 100;
-        $post['returnUrl'] = Url::to($this->module->returnUrl, true);
-        return $this->sendApi($this->module->actionRegister, $post);
-    }
-
-    /**
-     * Откправка запроса в api сбербанка
-     * @param $action Акшион на который отпровляем запрос
-     * @param $data Параметры которые передаём в запрос
-     * @return mixed Ответ сбербанка
-     */
-    private function sendApi($action, $data)
-    {
-        $data['userName'] = $this->module->login;
-        $data['password'] = $this->module->password;
-        $url = $this->module->url . $action;
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        $out = curl_exec($curl);
-        curl_close($curl);;
-        return Json::decode($out);
     }
 }

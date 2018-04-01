@@ -1,7 +1,12 @@
 <?php
 
 namespace pantera\yii2\pay\sberbank\models;
+
 use Yii;
+use yii\base\InvalidParamException;
+use yii\db\ActiveRecord;
+use yii\helpers\Json;
+use function is_array;
 
 /**
  * This is the model class for table "invoice".
@@ -15,25 +20,50 @@ use Yii;
  * @property string $pay_time
  * @property string $method
  * @property string $orderId
+ * @property int $remote_id
+ * @property array|string $data
  */
-class Invoice extends \yii\db\ActiveRecord
+class Invoice extends ActiveRecord
 {
     /**
      * Добавление оплаты через сбербанк
-     * @param integer $orderId Идентификатор заказа
+     * @param integer|null $orderId Идентификатор заказа
      * @param float $price Цена заказа
+     * @param int|null $remoteId Идентификатор заказа из api
+     * @param array $data Массив дополнительные данных
      * @return self
      */
-    public static function addSberbank($orderId, $price)
+    public static function addSberbank($orderId = null, $price, $remoteId = null, $data = [])
     {
+        if (empty($orderId) && empty($remoteId)) {
+            throw new InvalidParamException('Обязательно должен присутствовать идентификатор локального заказа или с удаленного сервиса');
+        }
         $model = new self();
         $model->order_id = $orderId;
+        $model->remote_id = $remoteId;
         $model->user_id = Yii::$app->user->id;
         $model->method = 'SB';
         $model->sum = $price;
         $model->status = 'I';
+        $model->data = $data;
         $model->save();
         return $model;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (is_array($this->data)) {
+            $this->data = Json::encode($this->data);
+        }
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        if ($this->data) {
+            $this->data = Json::decode($this->data);
+        }
     }
 
     /**
@@ -50,10 +80,10 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'order_id'], 'integer'],
-            [['order_id', 'sum', 'method', 'status'], 'required'],
+            [['user_id', 'order_id', 'remote_id'], 'integer'],
+            [['sum', 'method', 'status'], 'required'],
             [['sum'], 'number'],
-            [['created_at', 'pay_time', 'orderId'], 'safe'],
+            [['data', 'created_at', 'pay_time', 'orderId'], 'safe'],
             [['method'], 'string', 'max' => 7],
             [['status'], 'string', 'max' => 7],
         ];
