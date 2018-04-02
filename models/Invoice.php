@@ -52,10 +52,18 @@ class Invoice extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if (is_array($this->data)) {
-            $this->data = Json::encode($this->data);
+        if (is_array($this->data) === false) {
+            $this->data = [];
         }
+        $this->data = array_merge(['uniqid' => uniqid('', true)], $this->data);
+        $this->data = Json::encode($this->data);
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->data = Json::decode($this->data);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function afterFind()

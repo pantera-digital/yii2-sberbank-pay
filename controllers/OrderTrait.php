@@ -27,7 +27,7 @@ trait OrderTrait
     private function createOrder(Invoice $model)
     {
         $post = [];
-        $post['orderNumber'] = $model->order_id ?: $model->remote_id;
+        $post['orderNumber'] = $model->data['uniqid'];
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->module->returnUrl, true);
         return $this->sendApi($this->module->actionRegister, $post);
