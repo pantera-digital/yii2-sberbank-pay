@@ -52,6 +52,10 @@ class Module extends \yii\base\Module
      * необходимо указывать без host
      */
     public $returnUrl = '/sberbank/default/complete';
+    /* @var null|Closure Калбэк вызывается в случии успешно создания заказа по api */
+    public $apiCallbackCreateSuccess;
+    /* @var null|Closure Калбэк вызывается в случии ошибки при создания заказа по api */
+    public $apiCallbackCreateFail;
 
     public function init()
     {
