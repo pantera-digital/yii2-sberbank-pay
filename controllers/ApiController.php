@@ -29,21 +29,21 @@ class ApiController extends Controller
 
     public function actionCreate()
     {
+        if (is_null(Yii::$app->request->post('id')) || is_null(Yii::$app->request->post('price'))) {
+            throw new InvalidParamException('Обязательно должны присутствовать идентификатор и цена');
+        }
+        $data = [
+            'phone' => Yii::$app->request->post('phone'),
+            'mail' => Yii::$app->request->post('mail'),
+            'comment' => Yii::$app->request->post('comment'),
+        ];
+        $model = Invoice::addSberbank(
+            null,
+            Yii::$app->request->post('price'),
+            Yii::$app->request->post('id'),
+            $data
+        );
         try {
-            if (is_null(Yii::$app->request->post('id')) || is_null(Yii::$app->request->post('price'))) {
-                throw new InvalidParamException('Обязательно должны присутствовать идентификатор и цена');
-            }
-            $data = [
-                'phone' => Yii::$app->request->post('phone'),
-                'mail' => Yii::$app->request->post('mail'),
-                'comment' => Yii::$app->request->post('comment'),
-            ];
-            $model = Invoice::addSberbank(
-                null,
-                Yii::$app->request->post('price'),
-                Yii::$app->request->post('id'),
-                $data
-            );
             $result = $this->createOrder($model);
             if (array_key_exists('errorCode', $result)) {
                 throw new ErrorException($result['errorMessage']);
@@ -57,13 +57,13 @@ class ApiController extends Controller
                     'url' => $formUrl,
                 ];
             } else {
-                return call_user_func($this->module->apiCallbackCreateSuccess, $result);
+                return call_user_func($this->module->apiCallbackCreateSuccess, $result, $model);
             }
         } catch (Exception $e) {
             if (is_null($this->module->apiCallbackCreateFail)) {
                 return $e;
             } else {
-                return call_user_func($this->module->apiCallbackCreateFail, $e);
+                return call_user_func($this->module->apiCallbackCreateFail, $e, $model);
             }
         }
     }
