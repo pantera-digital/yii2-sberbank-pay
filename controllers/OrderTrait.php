@@ -30,6 +30,7 @@ trait OrderTrait
         $post['orderNumber'] = $model->data['uniqid'];
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->module->returnUrl, true);
+        $post['sessionsTimeoutSecs'] = $this->module->sessionsTimeoutSecs;
         return $this->sendApi($this->module->actionRegister, $post);
     }
 
