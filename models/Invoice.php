@@ -22,6 +22,7 @@ use function is_array;
  * @property string $orderId
  * @property int $remote_id
  * @property array|string $data
+ * @property string $url
  */
 class Invoice extends ActiveRecord
 {
@@ -106,6 +107,7 @@ class Invoice extends ActiveRecord
             [['data', 'created_at', 'pay_time', 'orderId'], 'safe'],
             [['method'], 'string', 'max' => 7],
             [['status'], 'string', 'max' => 7],
+            [['url'], 'string', 'max' => 255],
         ];
     }
 

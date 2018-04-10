@@ -31,7 +31,12 @@ trait OrderTrait
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->module->returnUrl, true);
         $post['sessionsTimeoutSecs'] = $this->module->sessionsTimeoutSecs;
-        return $this->sendApi($this->module->actionRegister, $post);
+        $result = $this->sendApi($this->module->actionRegister, $post);
+        if (array_key_exists('formUrl', $result)) {
+            $model->url = $result['formUrl'];
+            $model->save();
+        }
+        return $result;
     }
 
     /**
