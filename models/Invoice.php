@@ -55,7 +55,7 @@ class Invoice extends ActiveRecord
         if (is_array($this->data) === false) {
             $this->data = [];
         }
-        $this->data = array_merge(['uniqid' => uniqid('', true)], $this->data);
+        $this->data = array_merge(['uniqid' => $this->id . '-' . time()], $this->data);
         $this->data = Json::encode($this->data);
         return parent::beforeSave($insert);
     }
