@@ -50,12 +50,24 @@ class Invoice extends ActiveRecord
         return $model;
     }
 
+    /**
+     * Создание уникального номера заказа
+     */
+    public function generateUniqid()
+    {
+        if (empty($this->id)) {
+            $sql = 'SELECT MAX(id) FROM ' . self::tableName();
+            $this->id = Yii::$app->db->createCommand($sql)->queryScalar() + 1;
+        }
+        return $this->id . '-' . time();
+    }
+
     public function beforeSave($insert)
     {
         if (is_array($this->data) === false) {
             $this->data = [];
         }
-        $this->data = array_merge(['uniqid' => $this->id . '-' . time()], $this->data);
+        $this->data = array_merge(['uniqid' => $this->generateUniqid()], $this->data);
         $this->data = Json::encode($this->data);
         return parent::beforeSave($insert);
     }
