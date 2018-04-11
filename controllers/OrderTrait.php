@@ -9,6 +9,7 @@
 namespace pantera\yii2\pay\sberbank\controllers;
 
 
+use function array_key_exists;
 use pantera\yii2\pay\sberbank\models\Invoice;
 use pantera\yii2\pay\sberbank\Module;
 use yii\helpers\Json;
@@ -31,6 +32,9 @@ trait OrderTrait
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->module->returnUrl, true);
         $post['sessionsTimeoutSecs'] = $this->module->sessionsTimeoutSecs;
+        if(array_key_exists('comment', $model->data)){
+            $post['description'] = $model->data['comment'];
+        }
         $result = $this->sendApi($this->module->actionRegister, $post);
         if (array_key_exists('formUrl', $result)) {
             $model->url = $result['formUrl'];
