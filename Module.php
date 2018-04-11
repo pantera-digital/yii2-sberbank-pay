@@ -58,6 +58,8 @@ class Module extends \yii\base\Module
     public $apiCallbackCreateFail;
     /* @var int Время жизни заказа в секундах */
     public $sessionsTimeoutSecs = 1200;
+    /* @var Closure|null Колбек для генерации уникально идентификатора заказа */
+    public $idGenerator;
 
     public function init()
     {

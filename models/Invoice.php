@@ -2,10 +2,12 @@
 
 namespace pantera\yii2\pay\sberbank\models;
 
+use pantera\yii2\pay\sberbank\Module;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
+use function call_user_func;
 use function is_array;
 
 /**
@@ -56,11 +58,17 @@ class Invoice extends ActiveRecord
      */
     public function generateUniqid()
     {
+        /* @var $module Module */
         if (empty($this->id)) {
             $sql = 'SELECT MAX(id) FROM ' . self::tableName();
             $this->id = Yii::$app->db->createCommand($sql)->queryScalar() + 1;
         }
-        return $this->id . '-' . time();
+        $id = $this->id . '-' . time();
+        $module = Yii::$app->getModule('sberbank');
+        if ($module->idGenerator) {
+            $id = call_user_func($module->idGenerator, $this, $id);
+        }
+        return $id;
     }
 
     public function beforeSave($insert)
