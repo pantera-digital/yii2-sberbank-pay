@@ -57,7 +57,7 @@ class Module extends \yii\base\Module
     /* @var null|Closure Калбэк вызывается в случии ошибки при создания заказа по api */
     public $apiCallbackCreateFail;
     /* @var int Время жизни заказа в секундах */
-    public $sessionsTimeoutSecs = 1200;
+    public $sessionTimeoutSecs = 1200;
     /* @var Closure|null Колбек для генерации уникально идентификатора заказа */
     public $idGenerator;
 

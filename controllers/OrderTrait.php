@@ -31,7 +31,7 @@ trait OrderTrait
         $post['orderNumber'] = $model->data['uniqid'];
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->module->returnUrl, true);
-        $post['sessionsTimeoutSecs'] = $this->module->sessionsTimeoutSecs;
+        $post['sessionTimeoutSecs'] = $this->module->sessionTimeoutSecs;
         if(array_key_exists('comment', $model->data)){
             $post['description'] = $model->data['comment'];
         }
