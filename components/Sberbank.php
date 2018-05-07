@@ -80,7 +80,7 @@ class Sberbank extends Component
         $post['orderNumber'] = $model->data['uniqid'];
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->returnUrl, true);
-        $post['sessionsTimeoutSecs'] = $this->sessionTimeoutSecs;
+        $post['sessionTimeoutSecs'] = $this->sessionTimeoutSecs;
         if (array_key_exists('comment', $model->data)) {
             $post['description'] = $model->data['comment'];
         }
