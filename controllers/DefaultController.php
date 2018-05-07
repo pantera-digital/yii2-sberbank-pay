@@ -3,6 +3,7 @@
 namespace pantera\yii2\pay\sberbank\controllers;
 
 use pantera\yii2\pay\sberbank\models\Invoice;
+use pantera\yii2\pay\sberbank\Module;
 use Yii;
 use yii\base\ErrorException;
 use yii\db\Expression;
@@ -11,7 +12,8 @@ use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
-    use OrderTrait;
+    /* @var Module */
+    public $module;
 
     /**
      * Сюда будет перенаправлен результат оплаты
@@ -36,9 +38,7 @@ class DefaultController extends Controller
         if (is_null($model)) {
             throw new NotFoundHttpException();
         }
-        $post = [];
-        $post['orderId'] = Yii::$app->request->get('orderId');
-        $result = $this->sendApi($this->module->actionStatus, $post);
+        $result = $this->module->sberbank->complete(Yii::$app->request->get('orderId'));
         //Проверяем статус оплаты если всё хорошо обновим инвойс и редерекним
         if (isset($result['OrderStatus']) && ($result['OrderStatus'] == 2)) {
             $model->status = "S";
@@ -67,7 +67,7 @@ class DefaultController extends Controller
     public function actionCreate($id)
     {
         $model = Invoice::findOne($id);
-        $result = $this->createOrder($model);
+        $result = $this->module->sberbank->create($model);
         if (array_key_exists('errorCode', $result)) {
             throw new ErrorException($result['errorMessage']);
         }

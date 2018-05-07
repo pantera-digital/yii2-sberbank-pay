@@ -64,7 +64,7 @@ class Invoice extends ActiveRecord
             $this->id = Yii::$app->db->createCommand($sql)->queryScalar() + 1;
         }
         $id = $this->id . '-' . time();
-        $module = Yii::$app->getModule('sberbank');
+        $module = Module::getInstance();
         if ($module->idGenerator) {
             $id = call_user_func($module->idGenerator, $this, $id);
         }
