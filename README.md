@@ -10,7 +10,7 @@ composer require pantera-digital/yii2-sberbank-pay "@dev"
 php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
 ```
 
-### Настройка
+### Настройка, добавить в config/main.php
 
 ```
 'modules' => [
@@ -34,6 +34,14 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
         'successUrl' => '/paySuccess',
         // страница вашего сайта с информацией об НЕуспешной оплате
         'failUrl' => '/payFail',
+        // обработчик, вызываемый по факту успешной оплаты
+        'successCallback' => function($invoice){
+            // какая-то ваша логика, например
+            $order = \your\models\Order::findOne($invoice->id);
+            $client = $order->getClient();
+            $client->sendEmail('Зачислена оплата по вашему заказу №' . $order->id);
+            // .. и т.д.
+        }
     ],
 ]
 ```
@@ -56,3 +64,9 @@ $invoice = \pantera\yii2\pay\sberbank\models\Invoice::addSberbank($order->id, $o
 ```
 
 При этом при переходе пользователя по этой ссылке (либо автоматическом перенаправлении) будет произведено обращение к API сбербанка для создания инвойса у них в системе, и перенаправление уже на платежную форму Сбербанка.
+
+### Статусы инвойсов
+```
+I - initial, инвойс создан
+S - success, успешно оплачен
+```
