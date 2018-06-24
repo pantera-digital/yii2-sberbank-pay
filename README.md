@@ -20,12 +20,13 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
             'sberbank' => [
                 'class' => pantera\yii2\pay\sberbank\components\Sberbank::className(),
                 // время жизни инвойса в секундах (по умолчанию 20 минут - см. документацию Сбербанка)
+                // в это примере мы ставим время 1 неделю, т.е. в течение этого времени покупатель может произвести оплату
                 'sessionTimeoutSecs' => 60 * 60 * 24 * 7,
                 // логин api мерчанта
                 'login' => 'ваш логин',
                 // пароль api мерчанта
                 'password' => 'ваш пароль',
-                // использовать тестовый режим, по умолчанию - нет
+                // использовать тестовый режим (по умолчанию - нет)
                 'testServer' => false,
             ],
         ],
