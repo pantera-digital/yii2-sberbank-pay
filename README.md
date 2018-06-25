@@ -41,13 +41,13 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
         // страница вашего сайта с информацией об успешной оплате
         'successUrl' => '/paySuccess',
         
-        // страница вашего сайта с информацией об НЕуспешной оплате
+        // страница вашего сайта с информацией о НЕуспешной оплате
         'failUrl' => '/payFail',
         
         // обработчик, вызываемый по факту успешной оплаты
         'successCallback' => function($invoice){
             // какая-то ваша логика, например
-            $order = \your\models\Order::findOne($invoice->id);
+            $order = \your\models\Order::findOne($invoice->order_id);
             $client = $order->getClient();
             $client->sendEmail('Зачислена оплата по вашему заказу №' . $order->id);
             // .. и т.д.
