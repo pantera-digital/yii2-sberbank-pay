@@ -21,22 +21,29 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
         'components' => [
             'sberbank' => [
                 'class' => pantera\yii2\pay\sberbank\components\Sberbank::className(),
+                
                 // время жизни инвойса в секундах (по умолчанию 20 минут - см. документацию Сбербанка)
                 // в этом примере мы ставим время 1 неделю, т.е. в течение этого времени покупатель может
                 // произвести оплату по выданной ему ссылке
                 'sessionTimeoutSecs' => 60 * 60 * 24 * 7,
+                
                 // логин api мерчанта
                 'login' => 'ваш логин',
+                
                 // пароль api мерчанта
                 'password' => 'ваш пароль',
+                
                 // использовать тестовый режим (по умолчанию - нет)
                 'testServer' => false,
             ],
         ],
+        
         // страница вашего сайта с информацией об успешной оплате
         'successUrl' => '/paySuccess',
+        
         // страница вашего сайта с информацией об НЕуспешной оплате
         'failUrl' => '/payFail',
+        
         // обработчик, вызываемый по факту успешной оплаты
         'successCallback' => function($invoice){
             // какая-то ваша логика, например
