@@ -15,26 +15,31 @@ use yii\base\InvalidConfigException;
 class Module extends \yii\base\Module
 {
     /**
-     * @var string Url адрес страницы успешной оплаты
+     * @var string url-адрес страницы успешной оплаты
      */
     public $successUrl;
+    
     /**
-     * @var string Url адрес страницы если оплата провалилась
+     * @var string url-адрес страницы неуспешной оплаты
      */
     public $failUrl;
+    
     /**
-     * @var null|Closure Callback при успешной оплате
+     * @var Closure|null Callback при успешной оплате
      */
     public $successCallback = null;
-    /* @var Closure|null Колбек для генерации уникально идентификатора заказа */
-    public $idGenerator;
+    
+    /**
+     * @var Closure|null Callback для генерации уникального идентификатора заказа
+     */
+    public $idGenerator = null;
 
     public function init()
     {
         parent::init();
         if (empty($this->successUrl)
             || empty($this->failUrl)) {
-            throw new InvalidConfigException('Модуль настроен не правильно пожалуйсто прочтите документацию');
+            throw new InvalidConfigException('Модуль настроен неправильно, пожалуйста прочтите документацию');
         }
     }
 }
