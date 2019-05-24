@@ -8,7 +8,6 @@
 
 namespace pantera\yii2\pay\sberbank\components;
 
-
 use pantera\yii2\pay\sberbank\models\Invoice;
 use pantera\yii2\pay\sberbank\Module;
 use yii\base\Component;
@@ -20,7 +19,6 @@ class Sberbank extends Component
 {
     /* @var Module */
     private $module;
-
     /**
      * @var string Логин в сбербанке
      */
@@ -109,7 +107,7 @@ class Sberbank extends Component
     {
         $data['userName'] = $this->login;
         $data['password'] = $this->password;
-        $url = $this->url . $action;
+        $url = $this->testServer ? $this->urlTest : $this->url . $action;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
