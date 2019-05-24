@@ -20,7 +20,7 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
         'class' => 'pantera\yii2\pay\sberbank\Module',
         'components' => [
             'sberbank' => [
-                'class' => pantera\yii2\pay\sberbank\components\Sberbank::className(),
+                'class' => pantera\yii2\pay\sberbank\components\Sberbank::class,
                 
                 // время жизни инвойса в секундах (по умолчанию 20 минут - см. документацию Сбербанка)
                 // в этом примере мы ставим время 1 неделю, т.е. в течение этого времени покупатель может
