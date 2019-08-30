@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: singletonn
- * Date: 5/7/18
- * Time: 2:26 PM
- */
 
 namespace pantera\yii2\pay\sberbank\components;
 
@@ -19,6 +13,7 @@ class Sberbank extends Component
 {
     /* @var Module */
     private $module;
+
     /**
      * @var string Логин в сбербанке
      */
@@ -72,9 +67,8 @@ class Sberbank extends Component
         }
     }
 
-    public function create(Invoice $model)
+    public function create(Invoice $model, array $post = [])
     {
-        $post = [];
         $post['orderNumber'] = $model->data['uniqid'];
         $post['amount'] = $model->sum * 100;
         $post['returnUrl'] = Url::to($this->returnUrl, true);
@@ -103,10 +97,9 @@ class Sberbank extends Component
      * @param $data array Параметры которые передаём в запрос
      * @return mixed Ответ сбербанка
      */
-    private function send($action, $data)
+    public function send($action, $data)
     {
-        $data['userName'] = $this->login;
-        $data['password'] = $this->password;
+        $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -116,5 +109,12 @@ class Sberbank extends Component
         $out = curl_exec($curl);
         curl_close($curl);
         return Json::decode($out);
+    }
+
+    protected function insertAuthData(array $data)
+    {
+        $data['userName'] = $this->login;
+        $data['password'] = $this->password;
+        return $data;
     }
 }
