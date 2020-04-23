@@ -54,7 +54,8 @@ class Invoice extends ActiveRecord
     }
 
     /**
-     * Создание уникального номера заказа
+     * Создание уникального номера инвойса, который
+     * передается в API Сбербанка параметром uniqid
      */
     public function generateUniqid()
     {
@@ -65,7 +66,7 @@ class Invoice extends ActiveRecord
         }
         $id = $this->id . '-' . time();
         $module = Module::getInstance();
-        if ($module->idGenerator) {
+        if ($module && is_callable($module->idGenerator)) {
             $id = call_user_func($module->idGenerator, $this, $id);
         }
         return $id;
