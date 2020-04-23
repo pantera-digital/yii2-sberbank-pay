@@ -45,13 +45,21 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
         'failUrl' => '/payFail',
         
         // обработчик, вызываемый по факту успешной оплаты
-        'successCallback' => function($invoice){
+        'successCallback' => function($invoice) {
             // какая-то ваша логика, например
             $order = \your\models\Order::findOne($invoice->order_id);
             $client = $order->getClient();
             $client->sendEmail('Зачислена оплата по вашему заказу №' . $order->id);
             // .. и т.д.
-        }
+        },
+
+        // callback для генерации собственного uniqid инвойса,
+        // вместо используемого по умолчанию формата `#invoice_id#-#timestamp#`
+        'idGenerator' => function(Invoice $invoice, int $id) {
+            // $id - это uniqid, сгенерированный по умолчанию
+            // вместо него используем собственный алгоритм, например такой
+            return '000-AAA-' . $invoice->id;
+        },
     ],
 ]
 ```
