@@ -53,8 +53,9 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
             // .. и т.д.
         },
 
-        // callback для генерации собственного uniqid инвойса,
-        // вместо используемого по умолчанию формата `#invoice_id#-#timestamp#`
+        // необязательный callback для генерации uniqid инвойса, необходим
+        // в том случае, если по каким-то причинам используемый по умолчанию
+        // формат `#invoice_id#-#timestamp#` вам не подходит
         'idGenerator' => function(Invoice $invoice, int $id) {
             // $id - это uniqid, сгенерированный по умолчанию
             // вместо него используем собственный алгоритм, например такой
