@@ -4,12 +4,12 @@
 
 ### Установка через композер
 ```
-composer require pantera-digital/yii2-sberbank-pay "@dev"
+composer require ykweb/yii2-sberbank-pay "@dev"
 ```
 
 ### Запустить миграции
 ```
-php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
+php yii migrate --migrationPath=@ykweb/yii2/pay/sberbank/migrations
 ```
 
 ### Настройка, добавить в config/main.php
@@ -17,10 +17,10 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
 ```
 'modules' => [
     'sberbank' => [
-        'class' => 'pantera\yii2\pay\sberbank\Module',
+        'class' => 'ykweb\yii2\pay\sberbank\Module',
         'components' => [
             'sberbank' => [
-                'class' => pantera\yii2\pay\sberbank\components\Sberbank::class,
+                'class' => ykweb\yii2\pay\sberbank\components\Sberbank::class,
                 
                 // время жизни инвойса в секундах (по умолчанию 20 минут - см. документацию Сбербанка)
                 // в этом примере мы ставим время 1 неделю, т.е. в течение этого времени покупатель может
@@ -73,7 +73,7 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
 // ...здесь какая-то ваша логика по сохранению заказа, например это объект $order
 
 // создаем и сохраняем инвойс, передаем в него номер и сумму вашего заказа
-$invoice = \pantera\yii2\pay\sberbank\models\Invoice::addSberbank($order->id, $order->price);
+$invoice = \ykweb\yii2\pay\sberbank\models\Invoice::addSberbank($order->id, $order->price);
 ```
 
 Далее для перенаправления пользователя на шлюз оплаты Сбербанка вам нужно выдать пользователю ссылку (либо автоматически перенаправить его) на url:

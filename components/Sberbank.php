@@ -102,22 +102,14 @@ class Sberbank extends Component
         $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
         $curl = curl_init();
-        //curl_setopt($curl, CURLOPT_URL, $url);
-        //curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt($curl, CURLOPT_POST, true);
-        //curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt_array($curl, array(
             CURLOPT_VERBOSE => true,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-//            CURLOPT_TIMEOUT => 60,
+            //CURLOPT_SSL_VERIFYHOST => false,
+            //CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($data, '', '&'),
-            //CURLOPT_HTTPHEADER => array('CMS: OpenCart 3.x', 'Module-Version: ' . $this->version),
-//            CURLOPT_SSLVERSION => 6,
-//            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
             CURLOPT_ENCODING, "gzip",
             CURLOPT_ENCODING, '',
         ));
