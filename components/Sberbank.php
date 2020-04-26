@@ -33,7 +33,7 @@ class Sberbank extends Component
     /**
      * @var bool Если true будет использован тестовый сервер
      */
-    public $testServer = false;
+    public $testServer = true;
     /**
      * @var string Акшион сбербанка для регистрации оплаты
      */
