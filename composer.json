@@ -1,5 +1,5 @@
 {
-  "name": "pantera-digital/yii2-sberbank-pay",
+  "name": "ykweb/yii2-sberbank-pay",
   "type": "yii2-extension",
   "authors": [
     {
@@ -13,7 +13,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "pantera\\yii2\\pay\\sberbank\\": ""
+      "ykweb\\yii2\\pay\\sberbank\\": ""
     }
   }
 }
