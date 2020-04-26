@@ -1,6 +1,7 @@
 {
   "name": "ykweb/yii2-sberbank-pay",
   "type": "yii2-extension",
+  "license": "Apache-2.0",
   "authors": [
     {
       "name": "webmayak",
@@ -9,8 +10,15 @@
     {
       "name": "singletonn",
       "email": "sopranowest@gmail.com"
+    },
+    {
+      "name": "ykweb",
+      "email": "ykweb@list.ru"
     }
   ],
+  "require": {
+    "yiisoft/yii2": "~2.0.0"
+  },
   "autoload": {
     "psr-4": {
       "ykweb\\yii2\\pay\\sberbank\\": ""

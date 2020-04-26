@@ -1,9 +1,9 @@
 <?php
 
-namespace pantera\yii2\pay\sberbank;
+namespace ykweb\yii2\pay\sberbank;
 
 use Closure;
-use pantera\yii2\pay\sberbank\components\Sberbank;
+use ykweb\yii2\pay\sberbank\components\Sberbank;
 use yii\base\InvalidConfigException;
 
 /**
@@ -18,17 +18,17 @@ class Module extends \yii\base\Module
      * @var string url-адрес страницы успешной оплаты
      */
     public $successUrl;
-    
+
     /**
      * @var string url-адрес страницы неуспешной оплаты
      */
     public $failUrl;
-    
+
     /**
      * @var Closure|null Callback при успешной оплате
      */
     public $successCallback = null;
-    
+
     /**
      * @var Closure|null Callback для генерации уникального идентификатора заказа
      */

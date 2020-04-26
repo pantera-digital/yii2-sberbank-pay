@@ -1,9 +1,9 @@
 <?php
 
-namespace pantera\yii2\pay\sberbank\components;
+namespace ykweb\yii2\pay\sberbank\components;
 
-use pantera\yii2\pay\sberbank\models\Invoice;
-use pantera\yii2\pay\sberbank\Module;
+use ykweb\yii2\pay\sberbank\models\Invoice;
+use ykweb\yii2\pay\sberbank\Module;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\Json;
@@ -25,11 +25,11 @@ class Sberbank extends Component
     /**
      * @var string Адрес платежного шлюза
      */
-    public $url = 'https://securepayments.sberbank.ru/payment/rest/';
+    public $url = 'https://securepayments.sberbank.kz/payment/rest/';
     /**
      * @var string Тестовый адрес платежного шлюза
      */
-    public $urlTest = 'https://3dsec.sberbank.ru/payment/rest/';
+    public $urlTest = 'https://3dsec.sberbank.kz/payment/rest/';
     /**
      * @var bool Если true будет использован тестовый сервер
      */
@@ -102,13 +102,33 @@ class Sberbank extends Component
         $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        $out = curl_exec($curl);
+        //curl_setopt($curl, CURLOPT_URL, $url);
+        //curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        //curl_setopt($curl, CURLOPT_POST, true);
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt_array($curl, array(
+            CURLOPT_VERBOSE => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+//            CURLOPT_TIMEOUT => 60,
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($data, '', '&'),
+            //CURLOPT_HTTPHEADER => array('CMS: OpenCart 3.x', 'Module-Version: ' . $this->version),
+//            CURLOPT_SSLVERSION => 6,
+//            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+            CURLOPT_ENCODING, "gzip",
+            CURLOPT_ENCODING, '',
+        ));
+        //$out = curl_exec($curl);
+
+        $response = curl_exec($curl);
+        $response = json_decode($response, true);
+
         curl_close($curl);
-        return Json::decode($out);
+        return $response;
+        //return Json::decode($out);
     }
 
     protected function insertAuthData(array $data)

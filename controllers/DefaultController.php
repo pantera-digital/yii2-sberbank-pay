@@ -1,9 +1,9 @@
 <?php
 
-namespace pantera\yii2\pay\sberbank\controllers;
+namespace ykweb\yii2\pay\sberbank\controllers;
 
-use pantera\yii2\pay\sberbank\models\Invoice;
-use pantera\yii2\pay\sberbank\Module;
+use ykweb\yii2\pay\sberbank\models\Invoice;
+use ykweb\yii2\pay\sberbank\Module;
 use Yii;
 use yii\base\ErrorException;
 use yii\db\Expression;

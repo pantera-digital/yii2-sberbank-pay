@@ -1,8 +1,8 @@
 <?php
 
-namespace pantera\yii2\pay\sberbank\models;
+namespace ykweb\yii2\pay\sberbank\models;
 
-use pantera\yii2\pay\sberbank\Module;
+use ykweb\yii2\pay\sberbank\Module;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\db\ActiveRecord;
