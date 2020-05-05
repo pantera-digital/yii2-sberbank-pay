@@ -115,9 +115,11 @@ class Sberbank extends Component
         ));
         //$out = curl_exec($curl);
 
+        Yii::trace($data);
         $response = curl_exec($curl);
+        Yii::trace($response);
         $response = json_decode($response, true);
-
+        Yii::trace($response);
         curl_close($curl);
         return $response;
         //return Json::decode($out);
