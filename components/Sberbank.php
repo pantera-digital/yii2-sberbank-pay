@@ -8,6 +8,7 @@ use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii;
 
 class Sberbank extends Component
 {
