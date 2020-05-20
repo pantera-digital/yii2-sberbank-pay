@@ -115,7 +115,7 @@ class Sberbank extends Component
             CURLOPT_ENCODING, '',
         ));
         //$out = curl_exec($curl);
-
+        Yii::trace($url);
         Yii::trace($data);
         $response = curl_exec($curl);
         Yii::trace($response);
