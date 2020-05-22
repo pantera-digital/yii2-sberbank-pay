@@ -103,11 +103,6 @@ class Sberbank extends Component
     public function send($action, $data)
     {
         Yii::trace($data);
-        echo "<pre>";
-        print_r($data);
-        print_r(http_build_query($data, '', '&'));
-        echo "</pre>";
-        die();
         $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
         $curl = curl_init();
