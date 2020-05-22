@@ -107,6 +107,7 @@ class Sberbank extends Component
         print_r($data);
         print_r(http_build_query($data, '', '&'));
         echo "</pre>";
+        
         die();
         $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
