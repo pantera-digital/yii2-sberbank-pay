@@ -103,6 +103,11 @@ class Sberbank extends Component
     public function send($action, $data)
     {
         Yii::trace($data);
+        echo "<pre>";
+        print_r($data);
+        print_r(http_build_query($data, '', '&'));
+        echo "</pre>";
+        die();
         $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
         $curl = curl_init();
@@ -118,6 +123,7 @@ class Sberbank extends Component
             CURLOPT_ENCODING, '',
         ));
         //$out = curl_exec($curl);
+        Yii::trace('http_build_query '.http_build_query($data, '', '&'));
         Yii::trace($url);
         Yii::trace($data);
         $response = curl_exec($curl);
