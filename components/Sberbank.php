@@ -116,8 +116,7 @@ class Sberbank extends Component
             CURLOPT_POSTFIELDS => http_build_query($data, '', '&'),
             CURLOPT_ENCODING, "gzip",
             CURLOPT_ENCODING, '',
-        ));
-        //$out = curl_exec($curl);
+        ));        
         Yii::trace('http_build_query '.http_build_query($data, '', '&'));
         Yii::trace($url);
         Yii::trace($data);
