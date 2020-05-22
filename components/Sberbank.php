@@ -70,8 +70,10 @@ class Sberbank extends Component
 
     public function create(Invoice $model, array $post = [])
     {
+        Yii::trace('Model->sum: '.$model->sum);
         $post['orderNumber'] = $model->data['uniqid'];
         $post['amount'] = $model->sum * 100;
+        Yii::trace('amount '.$post['amount']);
         $post['returnUrl'] = Url::to($this->returnUrl, true);
         $post['sessionTimeoutSecs'] = $this->sessionTimeoutSecs;
         if (array_key_exists('comment', $model->data)) {
@@ -100,6 +102,7 @@ class Sberbank extends Component
      */
     public function send($action, $data)
     {
+        Yii::trace($data);
         $data = $this->insertAuthData($data);
         $url = ($this->testServer ? $this->urlTest : $this->url) . $action;
         $curl = curl_init();
