@@ -50,6 +50,10 @@ class DefaultController extends Controller
             }
             $this->redirect($this->module->successUrl);
         } else {
+            if ($this->module->failCallback) {
+                $callback = $this->module->failCallback;
+                $callback($model);
+            }
             $this->redirect($this->module->failUrl);
         }
     }
