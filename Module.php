@@ -30,6 +30,11 @@ class Module extends \yii\base\Module
     public $successCallback = null;
     
     /**
+     * @var Closure|null Callback при НЕуспешной оплате
+     */
+    public $failCallback = null;
+
+    /**
      * @var Closure|null Callback для генерации уникального идентификатора заказа
      */
     public $idGenerator = null;

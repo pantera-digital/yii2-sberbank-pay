@@ -53,6 +53,15 @@ php yii migrate --migrationPath=@pantera/yii2/pay/sberbank/migrations
             // .. и т.д.
         },
 
+        // обработчик, вызываемый по факту НЕуспешной оплаты
+        'failCallback' => function($invoice) {
+            // какая-то ваша логика, например
+            $order = \your\models\Order::findOne($invoice->order_id);
+            $client = $order->getClient();
+            $client->sendEmail('Ошибка при оплате по вашему заказу №' . $order->id);
+            // .. и т.д.
+        },
+        
         // необязательный callback для генерации uniqid инвойса, необходим
         // в том случае, если по каким-то причинам используемый по умолчанию
         // формат `#invoice_id#-#timestamp#` вам не подходит
