@@ -6,7 +6,6 @@ use pantera\yii2\pay\sberbank\models\Invoice;
 use pantera\yii2\pay\sberbank\Module;
 use Yii;
 use yii\base\ErrorException;
-use yii\db\Expression;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -40,9 +39,8 @@ class DefaultController extends Controller
         }
         $result = $this->module->sberbank->complete(Yii::$app->request->get('orderId'));
         //Проверяем статус оплаты если всё хорошо обновим инвойс и редерекним
-        if (isset($result['OrderStatus']) && ($result['OrderStatus'] == 2)) {
-            $model->status = "S";
-            $model->pay_time = new Expression("NOW()");
+        if (isset($result['OrderStatus']) && ($result['OrderStatus'] == $this->module->sberbank->classRegister->successStatus())) {
+            $model->attributes = $this->module->sberbank->classRegister->getDataForUpdate();
             $model->update();
             if ($this->module->successCallback) {
                 $callback = $this->module->successCallback;

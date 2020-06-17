@@ -2,6 +2,8 @@
 
 namespace pantera\yii2\pay\sberbank\components;
 
+use pantera\yii2\pay\sberbank\components\registers\RegisterDo;
+use pantera\yii2\pay\sberbank\components\registers\RegisterPreAuthDo;
 use pantera\yii2\pay\sberbank\models\Invoice;
 use pantera\yii2\pay\sberbank\Module;
 use yii\base\Component;
@@ -35,10 +37,6 @@ class Sberbank extends Component
      */
     public $testServer = false;
     /**
-     * @var string Акшион сбербанка для регистрации оплаты
-     */
-    public $actionRegister = 'register.do';
-    /**
      * @var string Ашион сбербанка для получения статуса оплаты
      */
     public $actionStatus = 'getOrderStatus.do';
@@ -50,6 +48,18 @@ class Sberbank extends Component
      */
     public $returnUrl = '/sberbank/default/complete';
 
+    /**
+     * @var bool Использовать или нет двухстадийную оплату.
+     * По умолчанию - нет.
+     */
+    public $registerPreAuth = false;
+
+    /**
+     * Класс для регистрации оплаты.
+     * @var \pantera\yii2\pay\sberbank\components\registers\RegisterInterface
+     */
+    public $classRegister;
+
     public function init()
     {
         parent::init();
@@ -57,13 +67,17 @@ class Sberbank extends Component
         if (empty($this->login)
             || empty($this->password)
             || empty($this->url)
-            || empty($this->actionRegister)
             || empty($this->actionStatus)
             || empty($this->returnUrl)) {
             throw new InvalidConfigException('Модуль настроен не правильно пожалуйсто прочтите документацию');
         }
         if ($this->testServer && empty($this->urlTest)) {
             throw new InvalidConfigException('Включен тестовый режим но тестовый адрес сбербанка пустой');
+        }
+        if ($this->registerPreAuth === false) {
+            $this->classRegister = new RegisterDo();
+        } else {
+            $this->classRegister = new RegisterPreAuthDo();
         }
     }
 
@@ -76,7 +90,7 @@ class Sberbank extends Component
         if (array_key_exists('comment', $model->data)) {
             $post['description'] = $model->data['comment'];
         }
-        $result = $this->send($this->actionRegister, $post);
+        $result = $this->send($this->classRegister->getActionRegister(), $post);
         if (array_key_exists('formUrl', $result)) {
             $model->url = $result['formUrl'];
             $model->save();
