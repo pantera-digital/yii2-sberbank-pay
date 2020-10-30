@@ -17,7 +17,7 @@ use function is_array;
  * @property int $user_id
  * @property int $order_id
  * @property string $sum
- * @property int $status
+ * @property string $status
  * @property string $created_at
  * @property string $pay_time
  * @property string $method
