@@ -90,6 +90,9 @@ class Sberbank extends Component
         if (array_key_exists('comment', $model->data)) {
             $post['description'] = $model->data['comment'];
         }
+        if (array_key_exists('email', $model->data)) {
+            $post['email'] = $model->data['email'];
+        }
         $result = $this->send($this->classRegister->getActionRegister(), $post);
         if (array_key_exists('formUrl', $result)) {
             $model->url = $result['formUrl'];
